@@ -19,10 +19,13 @@ app.use(session({
 app.use(nocache());
 
 app.get('/', (req, res) => {    
-   if (req.session.user) {
-       res.render('home');
+   
+    
+   if (req.session.user||undefined) {
+       res.redirect('/home');
+      
    } else {
-     
+
        let lastUsername = req.session.lastEntered ? req.session.lastEntered.username : '';
        let lastPassword = req.session.lastEntered ? req.session.lastEntered.password : '';
        const usernameError = req.session.usernameError || '';
@@ -33,7 +36,7 @@ app.get('/', (req, res) => {
    }      
 });
 
-app.post('/verify', (req, res) => {
+app.post('/verify',(req, res) => {
    
     req.session.lastEntered = {
         username: req.body.username,
@@ -51,9 +54,12 @@ app.post('/verify', (req, res) => {
     }
 
     if (valid) {
+       
+        
         req.session.user = req.body.username;
         req.session.lastEntered = {}; 
         res.redirect('/home');  
+        console.log(req.session.user,'2');
     } else {
         res.redirect('/'); 
     }  
@@ -71,5 +77,8 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/'); 
 });
+app.use((req, res) => {
+    res.status(404).send('404 Not Found');
+  });
 
 app.listen(3000, () => console.log('Server running'));
