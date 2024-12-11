@@ -59,7 +59,7 @@ app.post('/verify',(req, res) => {
         req.session.user = req.body.username;
         req.session.lastEntered = {}; 
         res.redirect('/home');  
-        console.log(req.session.user,'2');
+    
     } else {
         res.redirect('/'); 
     }  
