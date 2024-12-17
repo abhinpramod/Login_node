@@ -21,7 +21,7 @@ app.use(nocache());
 app.get('/', (req, res) => {    
    
     
-   if (req.session.user) {
+   if (req.session.user || undefined ) {
        res.redirect('/home');
       
    } else {
